@@ -31,7 +31,7 @@ that the recipes were judged with.
 
 ### Workflows
 
-Text to video for now but entirely possible this works for i2va and ref2va, just haven't tested it enough. 
+ref2va seems to work but how well I don't know. Mostly tested with t2v. YMMV (again).
 One workflow each, with a note on why.
 
 | workflow | what | model evaluations |
@@ -39,6 +39,9 @@ One workflow each, with a note on why.
 | `h3_t2v_pdd8_flashgen_finish` | PDD8 from sigma 1.0 to 0.8, then FlashGen to 0 | 6 + 2 |
 | `h3_t2v_pdd6` | the PDD8 LoRA on a 6-step schedule. Only for close-ups and low-motion scenes, and iffy even there; included anyway | 6 |
 | `h3_t2v_flashgen_late_blocks` | FlashGen applied to DiT blocks 34-49 only; a curiosity | 4 |
+| `h3_i2v_pdd8` | PDD8 alone from a first frame; the i2v pick | 8 |
+| `h3_r2v_pdd8` | PDD8 alone on ref2va, two reference images | 8 |
+| `h3_r2v_flashgen` | FlashGen alone on ref2va; an untested transfer | 4 |
 | `h3_t2v_fasth3_contract` | FastVideo's FastH3 on FastVideo's own sampling settings; core nodes only | 8 |
 
 The renders these were judged on also ran Sol-Attn, the sparse attention
