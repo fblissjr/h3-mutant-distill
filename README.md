@@ -3,6 +3,10 @@
 Experimental distill adapters for h3 in comfyui safetensor format. YMMV.
 ¯\\\_(ツ)\_/¯ on if they're any good or not.
 
+Get the adapters from
+[fbjr/h3-mutant-distill](https://huggingface.co/fbjr/h3-mutant-distill) on
+Hugging Face and put them in your ComfyUI `models/loras/` folder.
+
 ## How to run in ComfyUI
 
 **Do not** use the standard load LoRA node (I mean you can if you want, I
@@ -12,8 +16,8 @@ ComfyUI's LoRA loader merges a LoRA into the int8 checkpoint by
 requantizing it, which rounds away most of these adapters; the node applies
 them at the call instead.
 
-Install [h3-mutant-distill](https://github.com/fblissjr/h3-mutant-distill) through ComfyUI-Manager, or clone it into
-`custom_nodes/`. Then open a workflow from
+Install [h3-mutant-distill](https://github.com/fblissjr/h3-mutant-distill) with ComfyUI-Manager's
+"Install via Git URL", or clone it into `custom_nodes/`. Then open a workflow from
 [`example_workflows/`](https://github.com/fblissjr/h3-mutant-distill/tree/main/example_workflows): the frontend
 offers to download each missing model.
 
