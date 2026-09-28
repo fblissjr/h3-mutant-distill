@@ -12,6 +12,14 @@ ComfyUI's LoRA loader merges a LoRA into the int8 checkpoint by
 requantizing it, which rounds away most of these adapters; the node applies
 them at the call instead.
 
+One node, `H3 Exact LoRA (FlashGen / PDD)`, loads every adapter here, PDD8
+and FlashGen alike. For a PDD8 file it also installs the modulation update
+and the per-step output heads, so no separate PDD node is needed. On every
+adapter recipe we checked (text, image and reference to video) it renders
+bit-identical final latents, video and audio, to the PDD and LoRA nodes in
+[ComfyUI-h3-explorations](https://github.com/fblissjr/ComfyUI-h3-explorations)
+that the recipes were judged with.
+
 1. Install this node: in `ComfyUI/custom_nodes/`, run
    `git clone https://github.com/fblissjr/h3-mutant-distill`, then restart
    ComfyUI.
