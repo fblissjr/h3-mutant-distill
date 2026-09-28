@@ -3,18 +3,40 @@
 Experimental distill adapters for h3 in comfyui safetensor format. YMMV.
 ¯\\\_(ツ)\_/¯ on if they're any good or not.
 
-Get the adapters from
-[fbjr/h3-mutant-distill](https://huggingface.co/fbjr/h3-mutant-distill) on
-Hugging Face and put them in your ComfyUI `models/loras/` folder.
-
 ## How to run in ComfyUI
 
 **Do not** use the standard load LoRA node (I mean you can if you want, I
-guess): sorry for adding yet more custom code, but requires using nodes from
-[h3-mutant-distill](https://github.com/fblissjr/h3-mutant-distill) because
+guess): sorry for adding yet more custom code, but requires using the node in
+this repo because
 ComfyUI's LoRA loader merges a LoRA into the int8 checkpoint by
 requantizing it, which rounds away most of these adapters; the node applies
 them at the call instead.
+
+1. Install this node: in `ComfyUI/custom_nodes/`, run
+   `git clone https://github.com/fblissjr/h3-mutant-distill`, then restart
+   ComfyUI.
+2. Get the adapters from
+   [fbjr/h3-mutant-distill](https://huggingface.co/fbjr/h3-mutant-distill) on
+   Hugging Face and put them in your ComfyUI `models/loras/` folder.
+3. Open a workflow from `example_workflows/`. The frontend offers to
+   download any model that is missing.
+
+### Workflows
+
+Text to video for now but entirely possible this works for i2va and ref2va, just haven't tested it enough. 
+One workflow each, with a note on why.
+
+| workflow | what | model evaluations |
+|---|---|---|
+| `h3_t2v_pdd8_flashgen_finish` | PDD8 from sigma 1.0 to 0.8, then FlashGen to 0 | 6 + 2 |
+| `h3_t2v_pdd6` | the PDD8 LoRA on a 6-step schedule. Only for close-ups and low-motion scenes, and iffy even there; included anyway | 6 |
+| `h3_t2v_flashgen_late_blocks` | FlashGen applied to DiT blocks 34-49 only; a curiosity | 4 |
+| `h3_t2v_fasth3_contract` | FastVideo's FastH3 on FastVideo's own sampling settings; core nodes only | 8 |
+
+The renders these were judged on also ran Sol-Attn, the sparse attention
+from [ComfyUI-h3-explorations](https://github.com/fblissjr/ComfyUI-h3-explorations),
+where the node's parity check and the records behind every verdict live.
+These workflows use ComfyUI's kitchen attention instead.
 
 ## What to try first
 
@@ -115,30 +137,6 @@ Each file's metadata records its source and conversion. The converter is
 [`reference/convert_flashgen_lora.py`](https://huggingface.co/fbjr/h3-mutant-distill/blob/main/reference/convert_flashgen_lora.py),
 with the commands to rebuild both files in
 [`reference/README.md`](https://huggingface.co/fbjr/h3-mutant-distill/blob/main/reference/README.md).
-
-## Install
-
-In ComfyUI-Manager, "Install via Git URL" with
-`https://github.com/fblissjr/h3-mutant-distill`, or clone this repo into
-`custom_nodes/`. Then open a workflow from `example_workflows/`: the
-frontend offers to download each missing model.
-
-## Workflows
-
-Text to video for now but entirely possible this works for i2va and ref2va, just haven't tested it enough. 
-One workflow each, with a note on why.
-
-| workflow | what | model evaluations |
-|---|---|---|
-| `h3_t2v_pdd8_flashgen_finish` | PDD8 from sigma 1.0 to 0.8, then FlashGen to 0 | 6 + 2 |
-| `h3_t2v_pdd6` | the PDD8 LoRA on a 6-step schedule. Only for close-ups and low-motion scenes, and iffy even there; included anyway | 6 |
-| `h3_t2v_flashgen_late_blocks` | FlashGen applied to DiT blocks 34-49 only; a curiosity | 4 |
-| `h3_t2v_fasth3_contract` | FastVideo's FastH3 on FastVideo's own sampling settings; core nodes only | 8 |
-
-The renders these were judged on also ran Sol-Attn, the sparse attention
-from [ComfyUI-h3-explorations](https://github.com/fblissjr/ComfyUI-h3-explorations),
-where the node's parity check and the records behind every verdict live.
-These workflows use ComfyUI's kitchen attention instead.
 
 ## License
 
