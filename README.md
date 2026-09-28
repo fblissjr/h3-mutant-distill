@@ -16,29 +16,10 @@ ComfyUI's LoRA loader merges a LoRA into the int8 checkpoint by
 requantizing it, which rounds away most of these adapters; the node applies
 them at the call instead.
 
-Install [h3-mutant-distill](https://github.com/fblissjr/h3-mutant-distill) with ComfyUI-Manager's
-"Install via Git URL", or clone it into `custom_nodes/`. Then open a workflow from
-[`example_workflows/`](https://github.com/fblissjr/h3-mutant-distill/tree/main/example_workflows): the frontend
-offers to download each missing model.
-
-Text to video for now but entirely possible this works for i2va and ref2va, just haven't tested it enough. 
-One workflow each, with a note on why.
-
-| workflow | what | model evaluations |
-|---|---|---|
-| `h3_t2v_pdd8_flashgen_finish` | PDD8 from sigma 1.0 to 0.8, then FlashGen to 0 | 6 + 2 |
-| `h3_t2v_pdd6` | the PDD8 LoRA on a 6-step schedule. Only for close-ups and low-motion scenes, and iffy even there; included anyway | 6 |
-| `h3_t2v_flashgen_late_blocks` | FlashGen applied to DiT blocks 34-49 only; a curiosity | 4 |
-| `h3_t2v_fasth3_contract` | FastVideo's FastH3 on FastVideo's own sampling settings; core nodes only | 8 |
-
-The renders these were judged on also ran Sol-Attn, the sparse attention
-from [ComfyUI-h3-explorations](https://github.com/fblissjr/ComfyUI-h3-explorations),
-where the node's parity check and the records behind every verdict live.
-These workflows use ComfyUI's kitchen attention instead.
-
 ## What to try first
 
-Judged by eye, by one person, on one or two seeds each.
+Each was judged by eye (blinded as best as I could), by me, often on 1-2 seeds
+max, on an RTX 4090 at 1344x768 and 345 frames.
 
 | try | adapters | task | verdict |
 |---|---|---|---|
@@ -134,6 +115,30 @@ Each file's metadata records its source and conversion. The converter is
 [`reference/convert_flashgen_lora.py`](https://huggingface.co/fbjr/h3-mutant-distill/blob/main/reference/convert_flashgen_lora.py),
 with the commands to rebuild both files in
 [`reference/README.md`](https://huggingface.co/fbjr/h3-mutant-distill/blob/main/reference/README.md).
+
+## Install
+
+In ComfyUI-Manager, "Install via Git URL" with
+`https://github.com/fblissjr/h3-mutant-distill`, or clone this repo into
+`custom_nodes/`. Then open a workflow from `example_workflows/`: the
+frontend offers to download each missing model.
+
+## Workflows
+
+Text to video for now but entirely possible this works for i2va and ref2va, just haven't tested it enough. 
+One workflow each, with a note on why.
+
+| workflow | what | model evaluations |
+|---|---|---|
+| `h3_t2v_pdd8_flashgen_finish` | PDD8 from sigma 1.0 to 0.8, then FlashGen to 0 | 6 + 2 |
+| `h3_t2v_pdd6` | the PDD8 LoRA on a 6-step schedule. Only for close-ups and low-motion scenes, and iffy even there; included anyway | 6 |
+| `h3_t2v_flashgen_late_blocks` | FlashGen applied to DiT blocks 34-49 only; a curiosity | 4 |
+| `h3_t2v_fasth3_contract` | FastVideo's FastH3 on FastVideo's own sampling settings; core nodes only | 8 |
+
+The renders these were judged on also ran Sol-Attn, the sparse attention
+from [ComfyUI-h3-explorations](https://github.com/fblissjr/ComfyUI-h3-explorations),
+where the node's parity check and the records behind every verdict live.
+These workflows use ComfyUI's kitchen attention instead.
 
 ## License
 
