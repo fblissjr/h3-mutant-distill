@@ -5,6 +5,21 @@ eye on a few renders, and the README says how far each one was tested. The
 weights live at [fbjr/h3-mutant-distill](https://huggingface.co/fbjr/h3-mutant-distill)
 and are not versioned here.
 
+## 0.4.0
+
+### Added
+
+- `H3 Keyframe Canvas` (`H3KeyframeCanvas`): picks the video canvas from the first frame the way the
+  release does (core's `adapt_canvas`: 768 short edge, area capped at 1344x768, multiples of 32),
+  refuses an aspect outside 1:4 to 4:1, and resizes the image to the canvas. A trimmed port of
+  ComfyUI-h3-explorations' retired `MiniMaxH3KeyframeCanvas`.
+
+### Changed
+
+- `h3_i2v_pdd8` and `h3_i2v_flashgen` wire it between the image and MiniMax H3 Image to Video, so a
+  first frame of any aspect is no longer stretched onto 1344x768. Their notes no longer ask you to
+  set width and height by hand.
+
 ## 0.3.0
 
 ### Added

@@ -20,6 +20,11 @@ bit-identical final latents, video and audio, to the PDD and LoRA nodes in
 [ComfyUI-h3-explorations](https://github.com/fblissjr/ComfyUI-h3-explorations)
 that the recipes were judged with.
 
+The image-to-video workflows also use a second, small node, `H3 Keyframe
+Canvas`. It sizes the video to your first frame's aspect the way the release
+does (768 short edge, area capped at 1344x768, multiples of 32) and resizes the
+image to it, so core's image-to-video node never stretches it.
+
 1. Install this node: in `ComfyUI/custom_nodes/`, run
    `git clone https://github.com/fblissjr/h3-mutant-distill`, then restart
    ComfyUI.
