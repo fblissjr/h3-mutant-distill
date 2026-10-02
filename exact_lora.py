@@ -33,6 +33,7 @@ from comfy_api.latest import io
 import comfy.lora
 import comfy.ops
 import comfy.utils
+import comfy.ldm.minimax.model as mm_h3
 import folder_paths
 from comfy.patcher_extension import WrappersMP
 
@@ -157,7 +158,7 @@ def _mlp_forward(mlp, fc1_forward, fc2_branch):
     fc2's matmul without calling the module, so fc2 cannot take its own patch."""
     swiglu = comfy.ops.INPUT_ACT_EAGER["swiglu"]
 
-    def forward(x):
+    def forward(x, residual=None, gate=None, segments=None):
         h = fc1_forward(x)
         out = comfy.ops.linear_input_act(mlp.fc2, h, "swiglu")
         flat_h = h.reshape(-1, h.shape[-1])
@@ -167,7 +168,13 @@ def _mlp_forward(mlp, fc1_forward, fc2_branch):
         for a in range(0, flat_h.shape[0], FC2_CHUNK_ROWS):
             b = min(a + FC2_CHUNK_ROWS, flat_h.shape[0])
             fc2_branch.add_into(swiglu(flat_h[a:b]), flat_out[a:b])
-        return out
+        if residual is None:
+            return out
+        # Core PR 16681's convention (open as of 2026-10-02): the block hands
+        # the MLP its residual add, `residual + gate * mlp(h)`, which is
+        # `_mod_gate`. Accepting it keeps fc2's branch when that PR merges;
+        # `bench/check_lora_branch.py` runs both conventions.
+        return mm_h3._mod_gate(residual, gate, out, segments)
     return forward
 
 

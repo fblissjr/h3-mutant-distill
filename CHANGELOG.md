@@ -5,6 +5,15 @@ eye on a few renders, and the README says how far each one was tested. The
 weights live at [fbjr/h3-mutant-distill](https://huggingface.co/fbjr/h3-mutant-distill)
 and are not versioned here.
 
+## 0.4.1
+
+### Fixed
+
+- `H3ExactLoRA`'s MLP patch accepts the `residual`, `gate` and `segments`
+  keywords that ComfyUI PR 16681 (open as of 2026-10-02) would pass, so a
+  LoRA touching fc2 keeps working if that PR merges. Today's ComfyUI is
+  unaffected.
+
 ## 0.4.0
 
 ### Added
